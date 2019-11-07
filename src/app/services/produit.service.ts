@@ -1,22 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Produit } from '../shared/produit';
-
+import { Observable, from } from 'rxjs';
+import {API_URLS} from '../config/api.url.config'
+import {HttpClient} from '@angular/common/http'
 @Injectable({
   providedIn: 'root'
 })
 export class ProduitService {
  
-  private Produits: Produit[]=[];
-  constructor() {
-   let p1:Produit=new Produit("Livre",50,20);
-   let p2:Produit=new Produit("Cahier",200,5.25);
-   let p3:Produit=new Produit("Stylo",500,2.10);
-   this.Produits.push(p1);
-   this.Produits.push(p2);
-   this.Produits.push(p3);
+  
+  constructor(private http:HttpClient) {
+   
   }
+getProduits():Observable<any>{
+  return this.http.get(API_URLS.PRODUITS_URL);
 
-  public getProduits():Produit[]{
-    return this.Produits;
-  }
+}
+addProduit(p): Observable <any>{
+  return this.http.post(API_URLS.PRODUITS_URL, p);
+
+}
+  
+updateProduit(p): Observable <any>{
+  return this.http.put(API_URLS.PRODUITS_URL, p)
+
+
+}
+deleteProduit(id): Observable <any>{
+ return this.http.delete(API_URLS.PRODUITS_URL + '/${id}');
+}
 }
